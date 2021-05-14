@@ -92,7 +92,7 @@ public class AzureDevOpsServerPullRequestDecorator implements PullRequestBuildSt
                     () -> new IllegalStateException(String.format(missingPropertyMessage,PULLREQUEST_AZUREDEVOPS_REPOSITORY_NAME)));
             String azureProjectId = analysisDetails.getScannerProperty(PULLREQUEST_AZUREDEVOPS_PROJECT_ID).orElseThrow(
                     () -> new IllegalStateException(String.format(missingPropertyMessage, PULLREQUEST_AZUREDEVOPS_PROJECT_ID)));
-            String apiVersion = analysisDetails.getScannerProperty(PULLREQUEST_AZUREDEVOPS_API_VERSION).orElse("6.0-preview.1");
+            String apiVersion = analysisDetails.getScannerProperty(PULLREQUEST_AZUREDEVOPS_API_VERSION).orElse("5.0-preview.1");
 
             if (almSettingDto.getPersonalAccessToken() == null) {
                 throw new IllegalStateException("Could not decorate AzureDevOps pullRequest. Access token has not been set");

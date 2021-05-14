@@ -18,6 +18,7 @@
  */
 package com.github.mc1arke.sonarqube.plugin;
 
+import com.github.mc1arke.sonarqube.plugin.ce.CommunityBranchEditionProvider;
 import com.github.mc1arke.sonarqube.plugin.ce.CommunityReportAnalysisComponentProvider;
 import com.github.mc1arke.sonarqube.plugin.scanner.CommunityBranchConfigurationLoader;
 import com.github.mc1arke.sonarqube.plugin.scanner.CommunityBranchParamsValidator;
@@ -26,13 +27,14 @@ import com.github.mc1arke.sonarqube.plugin.scanner.CommunityProjectPullRequestsL
 import com.github.mc1arke.sonarqube.plugin.scanner.ScannerPullRequestPropertySensor;
 import com.github.mc1arke.sonarqube.plugin.server.CommunityBranchFeatureExtension;
 import com.github.mc1arke.sonarqube.plugin.server.CommunityBranchSupportDelegate;
-import com.github.mc1arke.sonarqube.plugin.server.pullrequest.ws.action.CreateBitbucketCloudAction;
+import com.github.mc1arke.sonarqube.plugin.server.pullrequest.ws.action.CountBindingAction;
 import com.github.mc1arke.sonarqube.plugin.server.pullrequest.ws.action.DeleteBindingAction;
 import com.github.mc1arke.sonarqube.plugin.server.pullrequest.ws.action.SetAzureBindingAction;
 import com.github.mc1arke.sonarqube.plugin.server.pullrequest.ws.action.SetBitbucketBindingAction;
 import com.github.mc1arke.sonarqube.plugin.server.pullrequest.ws.action.SetBitbucketCloudBindingAction;
 import com.github.mc1arke.sonarqube.plugin.server.pullrequest.ws.action.SetGithubBindingAction;
 import com.github.mc1arke.sonarqube.plugin.server.pullrequest.ws.action.SetGitlabBindingAction;
+import com.github.mc1arke.sonarqube.plugin.server.pullrequest.ws.action.CreateBitbucketCloudAction;
 import com.github.mc1arke.sonarqube.plugin.server.pullrequest.ws.action.UpdateBitbucketCloudAction;
 import org.sonar.api.CoreProperties;
 import org.sonar.api.Plugin;
@@ -58,9 +60,11 @@ public class CommunityBranchPlugin implements Plugin, CoreExtension {
     @Override
     public void load(CoreExtension.Context context) {
         if (SonarQubeSide.COMPUTE_ENGINE == context.getRuntime().getSonarQubeSide()) {
-            context.addExtensions(CommunityReportAnalysisComponentProvider.class);
+            context.addExtensions(CommunityReportAnalysisComponentProvider.class, CommunityBranchEditionProvider.class);
         } else if (SonarQubeSide.SERVER == context.getRuntime().getSonarQubeSide()) {
             context.addExtensions(CommunityBranchFeatureExtension.class, CommunityBranchSupportDelegate.class,
+
+                                  CountBindingAction.class,
                                   DeleteBindingAction.class,
                                   SetGithubBindingAction.class,
                                   SetAzureBindingAction.class,
